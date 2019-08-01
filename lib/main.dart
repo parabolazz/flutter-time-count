@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -146,27 +147,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.transparent,
                 ),
                 child: Container(
+                  padding: EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15.0),
-                      topRight: Radius.circular(15.0),
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
                     ),
                   ),
-                  child: Column(
-                    children: <Widget>[
-                      RaisedButton(
-                              child: Text('升压'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }),
-                           RaisedButton(
-                              child: Text('降压'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }),    
-                    ],
-                  )
+                  child: TimeForm()
                 )
               );
             });
@@ -245,9 +234,95 @@ class TimeCard extends StatelessWidget {
                         height: 1.0,
                         fontSize: 12.0,
                         color: Colors.white54,
-                      ))
+                      )),
                     ]))
             ]))
+    );
+  }
+}
+
+class TimeForm extends StatefulWidget {
+  @override
+  MyTimeFormState createState() => MyTimeFormState();
+}
+
+class MyTimeFormState extends State<TimeForm> {
+  final _formKey = GlobalKey<FormState>();
+  DateTime selectedDate = DateTime.now();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            decoration: const InputDecoration(
+              enabledBorder: const OutlineInputBorder(
+                // width: 0.0 produces a thin "hairline" border
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(20.0),
+                ),
+                borderSide: const BorderSide(color: Colors.blueGrey, width: 0.0),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(20.0),
+                ),
+              ),
+              hintText: 'What do people call you?',
+              labelText: '它的名字',
+            ),
+            validator: (value) {
+              if(value.isEmpty) {
+                return '值不能为空';
+              }
+              return null;
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: Row(
+              children: <Widget>[
+                Text('选择时间：',
+                  style: TextStyle(
+                    fontSize: 16.0
+                  ),
+                ),
+                FlatButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: () => _selectDate(context),
+                  child: Text(DateFormat('yyyy-MM-dd').format(selectedDate)),
+                ),
+              ],
+            )
+            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: RaisedButton(
+              onPressed: () {
+                if(_formKey.currentState.validate()) {
+
+                }
+              },
+              child: Text('开始吧')
+            ),
+          )
+        ],
+      )
     );
   }
 }
