@@ -47,11 +47,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static final timeInfos = [
-    {
-      'name': '告白纪念日',
-      'time': '2019-09-30',
-      'countdown': _computeCountdown('2019-09-30')
-    },
+    // {
+    //   'name': '告白纪念日',
+    //   'time': '2019-09-30',
+    //   'countdown': _computeCountdown('2019-09-30')
+    // },
     {
       'name': '苹果 2019 发布会',
       'time': '2019-09-21',
@@ -155,7 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       topRight: Radius.circular(20.0),
                     ),
                   ),
-                  child: TimeForm()
+                  child: TimeForm(
+                    onAddEvent: (Map timeInfo) {
+                      setState(() {
+                        timeInfos.add({
+                          'name': timeInfo['name'],
+                          'time': timeInfo['time'],
+                          'countdown': _computeCountdown(timeInfo['time'])
+                        });
+                      });
+                    }
+                  )
                 )
               );
             });
@@ -179,9 +189,9 @@ class TimeCard extends StatelessWidget {
       padding: EdgeInsets.only(right: 80.0),
       child: Container(
         margin: EdgeInsets.only(bottom: 20.0),
-        padding: EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(10.0),
         width: 300.0,
-        height: 130.0,
+        height: 110.0,
         decoration: BoxDecoration(
           color: Colors.red,
           borderRadius: BorderRadius.circular(8.0),
@@ -207,7 +217,7 @@ class TimeCard extends StatelessWidget {
                       '${timeInfo['name']}',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20.0,
+                        fontSize: 18.0,
                         letterSpacing: 0.5),
                     ),
                     Text('${timeInfo['time']}',
@@ -224,7 +234,7 @@ class TimeCard extends StatelessWidget {
                       '${timeInfo['countdown']}',
                       style: TextStyle(
                         height: 0.79,
-                        fontSize: 88.0,
+                        fontSize: 75.0,
                         letterSpacing: -8.0,
                         color: Colors.white70,
                       ),
@@ -242,11 +252,17 @@ class TimeCard extends StatelessWidget {
 }
 
 class TimeForm extends StatefulWidget {
+
+  TimeForm({Key key, this.onAddEvent}) : super(key: key);
+  final void onAddEvent;
+
   @override
   MyTimeFormState createState() => MyTimeFormState();
 }
 
-class MyTimeFormState extends State<TimeForm> {
+class MyTimeFormState extends State<TimeForm>{
+
+  final _timeNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
 
@@ -270,6 +286,7 @@ class MyTimeFormState extends State<TimeForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextFormField(
+            controller: _timeNameController,
             decoration: const InputDecoration(
               enabledBorder: const OutlineInputBorder(
                 // width: 0.0 produces a thin "hairline" border
@@ -291,7 +308,7 @@ class MyTimeFormState extends State<TimeForm> {
                 return '值不能为空';
               }
               return null;
-            },
+            }
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -299,6 +316,7 @@ class MyTimeFormState extends State<TimeForm> {
               children: <Widget>[
                 Text('选择时间：',
                   style: TextStyle(
+                    color: Color(0xFF757575),
                     fontSize: 16.0
                   ),
                 ),
@@ -310,15 +328,30 @@ class MyTimeFormState extends State<TimeForm> {
               ],
             )
             ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 55.0),
+            alignment: Alignment.topCenter,
             child: RaisedButton(
+              color: Color(0xFF44b070),
+              textColor: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
               onPressed: () {
                 if(_formKey.currentState.validate()) {
-
+                    final timeinfo = {
+                      'name': _timeNameController.text,
+                      'time': selectedDate
+                    };
+                    onAddEvent(timeinfo);
                 }
               },
-              child: Text('开始吧')
+              child: Text('GO!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                  letterSpacing: 2.0,
+                )
+              )
             ),
           )
         ],
