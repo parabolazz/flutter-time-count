@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'components/TimeCard.dart';
+import 'components/TimeForm.dart';
 
 void main() => runApp(MyApp());
 
@@ -47,51 +48,35 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static final timeInfos = [
-    // {
-    //   'name': '告白纪念日',
-    //   'time': '2019-09-30',
-    //   'countdown': _computeCountdown('2019-09-30')
-    // },
+    {
+      'name': '告白纪念日',
+      'time': '2019-09-30',
+    },
     {
       'name': '苹果 2019 发布会',
       'time': '2019-09-21',
-      'countdown': _computeCountdown('2019-09-21')
     },
     {
       'name': '外婆的生日',
       'time': '2019-12-21',
-      'countdown': _computeCountdown('2019-12-21')
     },
     {
       'name': '杨千嬅惠州演唱会',
       'time': '2019-08-25',
-      'countdown': _computeCountdown('2019-08-25')
     },
     {
       'name': '国庆旅游',
       'time': '2019-10-01',
-      'countdown': _computeCountdown('2019-10-01')
     },
     {
       'name': '国庆旅游',
       'time': '2019-10-01',
-      'countdown': _computeCountdown('2019-10-01')
     },
     {
       'name': '国庆旅游',
       'time': '2019-10-01',
-      'countdown': _computeCountdown('2019-10-01')
     }
   ];
-
-  static int _computeCountdown(setTime) {
-    final currentTime = new DateTime.now();
-    final bookTime = DateTime.parse(setTime);
-    final durat = bookTime.difference(currentTime);
-    return durat.inDays;
-  }
-
-  void _test() {}
 
   List renderAllTimeCards(timeInfos) {
     return timeInfos.map<Widget>((item) => TimeCard(timeInfo: item)).toList();
@@ -156,12 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   child: TimeForm(
-                    onAddEvent: (Map timeInfo) {
+                    callback: (Map timeInfo) {
                       setState(() {
                         timeInfos.add({
                           'name': timeInfo['name'],
-                          'time': timeInfo['time'],
-                          'countdown': _computeCountdown(timeInfo['time'])
+                          'time': timeInfo['time']
                         });
                       });
                     }
@@ -173,189 +157,6 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
-class TimeCard extends StatelessWidget {
-  final Map timeInfo;
-  TimeCard({this.timeInfo});
-
-  @override
-  Widget build(
-    BuildContext context,
-  ) {
-    return Container(
-      padding: EdgeInsets.only(right: 80.0),
-      child: Container(
-        margin: EdgeInsets.only(bottom: 20.0),
-        padding: EdgeInsets.all(10.0),
-        width: 300.0,
-        height: 110.0,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(8.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(2.0, 4.0),
-              blurRadius: 6.0 /*,spreadRadius:2.0*/)
-          ],
-        ),
-          alignment: Alignment.topLeft,
-          child: Flex(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                fit: FlexFit.loose,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${timeInfo['name']}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                        letterSpacing: 0.5),
-                    ),
-                    Text('${timeInfo['time']}',
-                      style: TextStyle(
-                        color: Colors.white54,
-                      ))
-                    ])),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${timeInfo['countdown']}',
-                      style: TextStyle(
-                        height: 0.79,
-                        fontSize: 75.0,
-                        letterSpacing: -8.0,
-                        color: Colors.white70,
-                      ),
-                    ),
-                    Text('天',
-                      style: TextStyle(
-                        height: 1.0,
-                        fontSize: 12.0,
-                        color: Colors.white54,
-                      )),
-                    ]))
-            ]))
-    );
-  }
-}
-
-class TimeForm extends StatefulWidget {
-
-  TimeForm({Key key, this.onAddEvent}) : super(key: key);
-  final void onAddEvent;
-
-  @override
-  MyTimeFormState createState() => MyTimeFormState();
-}
-
-class MyTimeFormState extends State<TimeForm>{
-
-  final _timeNameController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  DateTime selectedDate = DateTime.now();
-
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-      });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TextFormField(
-            controller: _timeNameController,
-            decoration: const InputDecoration(
-              enabledBorder: const OutlineInputBorder(
-                // width: 0.0 produces a thin "hairline" border
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(20.0),
-                ),
-                borderSide: const BorderSide(color: Colors.blueGrey, width: 0.0),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(20.0),
-                ),
-              ),
-              hintText: 'What do people call you?',
-              labelText: '它的名字',
-            ),
-            validator: (value) {
-              if(value.isEmpty) {
-                return '值不能为空';
-              }
-              return null;
-            }
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0),
-            child: Row(
-              children: <Widget>[
-                Text('选择时间：',
-                  style: TextStyle(
-                    color: Color(0xFF757575),
-                    fontSize: 16.0
-                  ),
-                ),
-                FlatButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: () => _selectDate(context),
-                  child: Text(DateFormat('yyyy-MM-dd').format(selectedDate)),
-                ),
-              ],
-            )
-            ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 55.0),
-            alignment: Alignment.topCenter,
-            child: RaisedButton(
-              color: Color(0xFF44b070),
-              textColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-              onPressed: () {
-                if(_formKey.currentState.validate()) {
-                    final timeinfo = {
-                      'name': _timeNameController.text,
-                      'time': selectedDate
-                    };
-                    onAddEvent(timeinfo);
-                }
-              },
-              child: Text('GO!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  letterSpacing: 2.0,
-                )
-              )
-            ),
-          )
-        ],
-      )
     );
   }
 }
