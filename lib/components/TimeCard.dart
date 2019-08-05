@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TimeCard extends StatelessWidget {
   final Map timeInfo;
@@ -9,25 +10,23 @@ class TimeCard extends StatelessWidget {
     BuildContext context,
   ) {
 
-  int _computeCountdown(setTime) {
-    print(setTime);
+  String _computeCountdown(DateTime setTime) {
     final currentTime = new DateTime.now();
-    final bookTime = setTime is DateTime ? setTime : DateTime.parse(setTime);
-    final durat = bookTime.difference(currentTime);
-    return durat.inDays;
+    final durat = setTime.difference(currentTime);
+    final days = durat.inSeconds > 0 ? durat.inDays > 0 ? durat.inDays.toString() : '<1' : '0';
+    return days;
   }
 
-    final countdown = _computeCountdown(timeInfo['time']);
-  
+    final String countdown = _computeCountdown(timeInfo['time']);
+    final textTime =  DateFormat('yyyy-MM-dd').format(timeInfo['time']);
+
     return Container(
-      padding: EdgeInsets.only(right: 80.0),
-      child: Container(
         margin: EdgeInsets.only(bottom: 20.0),
         padding: EdgeInsets.all(10.0),
-        width: 300.0,
+        width: 330.0,
         height: 110.0,
         decoration: BoxDecoration(
-          color: Colors.red,
+          color: Color(0XFFFF5252),
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -54,7 +53,8 @@ class TimeCard extends StatelessWidget {
                         fontSize: 18.0,
                         letterSpacing: 0.5),
                     ),
-                    Text('${timeInfo['time']}',
+                    Text(
+                      textTime,
                       style: TextStyle(
                         color: Colors.white54,
                       ))
@@ -65,11 +65,13 @@ class TimeCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      countdown.toString(),
+                      countdown,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        height: 0.79,
+                        height: 0.8,
                         fontSize: 75.0,
-                        letterSpacing: -8.0,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -4.0,
                         color: Colors.white70,
                       ),
                     ),
@@ -80,7 +82,7 @@ class TimeCard extends StatelessWidget {
                         color: Colors.white54,
                       )),
                     ]))
-            ]))
+            ])
     );
   }
 }

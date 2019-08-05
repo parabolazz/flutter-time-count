@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+        accentColor: Color(0xFF03DAC5),
         canvasColor: Colors.transparent,
       ),
       home: MyHomePage(title: '计日'),
@@ -50,36 +51,40 @@ class _MyHomePageState extends State<MyHomePage> {
   static final timeInfos = [
     {
       'name': '告白纪念日',
-      'time': '2019-09-30',
+      'time': DateTime.parse('2019-09-30'),
     },
     {
       'name': '苹果 2019 发布会',
-      'time': '2019-09-21',
+      'time': DateTime.parse('2019-09-21'),
     },
     {
       'name': '外婆的生日',
-      'time': '2019-12-21',
+      'time': DateTime.parse('2019-08-06'),
     },
     {
       'name': '杨千嬅惠州演唱会',
-      'time': '2019-08-25',
+      'time': DateTime.parse('2019-08-05'),
     },
     {
       'name': '国庆旅游',
-      'time': '2019-10-01',
+      'time': DateTime.parse('2019-10-01'),
     },
     {
       'name': '国庆旅游',
-      'time': '2019-10-01',
+      'time': DateTime.parse('2019-10-01'),
     },
     {
       'name': '国庆旅游',
-      'time': '2019-10-01',
+      'time': DateTime.parse('2019-10-01'),
     }
   ];
 
   List renderAllTimeCards(timeInfos) {
-    return timeInfos.map<Widget>((item) => TimeCard(timeInfo: item)).toList();
+    return timeInfos.map<Widget>((item) => 
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [TimeCard(timeInfo: item)]
+      )).toList();
   }
 
   @override
@@ -99,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
         color: Colors.white,
-        padding: EdgeInsets.only(left: 20.0, top: 20.0),
+        padding: EdgeInsets.only(top: 20.0),
         alignment: Alignment.topLeft,
         child: ListView(
             // Column is also layout widget. It takes a list of children and
@@ -126,29 +131,35 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet<Null>(context:context, builder:(BuildContext context) {
-              return Container(
-                height: 500,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                ),
+              return GestureDetector(
+                onTap: () {
+                  // forbid bottomsheet closing by click
+                },
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 0),
+                  height: 500,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
+                    color: Colors.transparent,
                   ),
-                  child: TimeForm(
-                    callback: (Map timeInfo) {
-                      setState(() {
-                        timeInfos.add({
-                          'name': timeInfo['name'],
-                          'time': timeInfo['time']
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                    ),
+                    child: TimeForm(
+                      callback: (Map timeInfo) {
+                        setState(() {
+                          timeInfos.add({
+                            'name': timeInfo['name'],
+                            'time': timeInfo['time']
+                          });
+                          Navigator.pop(context);
                         });
-                      });
-                    }
+                      }
+                    )
                   )
                 )
               );
