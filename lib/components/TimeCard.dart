@@ -35,7 +35,7 @@ class TimeCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black26,
-              offset: Offset(2.0, 4.0),
+              offset: Offset(0.0, 4.0),
               blurRadius: 6.0 /*,spreadRadius:2.0*/)
           ],
         ),
@@ -53,7 +53,7 @@ class TimeCard extends StatelessWidget {
                     Text(
                       '${timeInfo['name']}',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.black87,
                         fontSize: 18.0,
                         letterSpacing: 0.5),
                     ),
