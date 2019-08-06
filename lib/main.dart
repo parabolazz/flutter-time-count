@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primaryColor: Colors.white,
-        accentColor: Color(0xFF03DAC5),
+        primaryColor: Color(0xFFffffff),
+        accentColor: Color(0xFF000000),
         canvasColor: Colors.transparent,
       ),
       home: MyHomePage(title: '计日'),

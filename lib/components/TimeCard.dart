@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 class TimeCard extends StatelessWidget {
   final Map timeInfo;
@@ -9,6 +10,9 @@ class TimeCard extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
+
+  const List cardColors = [0xffFF8A80, 0xff9E9E9E, 0XFF8C9EFF];
+  final currentCardColor = cardColors[new Random().nextInt(3)];
 
   String _computeCountdown(DateTime setTime) {
     final currentTime = new DateTime.now();
@@ -26,7 +30,7 @@ class TimeCard extends StatelessWidget {
         width: 330.0,
         height: 110.0,
         decoration: BoxDecoration(
-          color: Color(0XFFFF5252),
+          color: Color(0xffffffff),
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -49,14 +53,14 @@ class TimeCard extends StatelessWidget {
                     Text(
                       '${timeInfo['name']}',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 18.0,
                         letterSpacing: 0.5),
                     ),
                     Text(
                       textTime,
                       style: TextStyle(
-                        color: Colors.white54,
+                        color: Colors.black54,
                       ))
                     ])),
               Expanded(
@@ -69,17 +73,17 @@ class TimeCard extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         height: 0.8,
-                        fontSize: 75.0,
+                        fontSize: 60.0,
                         fontWeight: FontWeight.w500,
                         letterSpacing: -4.0,
-                        color: Colors.white70,
+                        color: Color(currentCardColor)
                       ),
                     ),
                     Text('天',
                       style: TextStyle(
                         height: 1.0,
                         fontSize: 12.0,
-                        color: Colors.white54,
+                        color: Colors.black54,
                       )),
                     ]))
             ])
