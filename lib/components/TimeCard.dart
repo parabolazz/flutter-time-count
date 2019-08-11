@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world/models/eventStorage.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 
 class TimeCard extends StatelessWidget {
-  final Map timeInfo;
+  final Event timeInfo;
   TimeCard({this.timeInfo});
 
   @override
@@ -21,8 +22,8 @@ class TimeCard extends StatelessWidget {
     return days;
   }
 
-    final String countdown = _computeCountdown(timeInfo['time']);
-    final textTime =  DateFormat('yyyy-MM-dd').format(timeInfo['time']);
+    final String countdown = _computeCountdown(timeInfo.utcTime);
+    final textTime =  DateFormat('yyyy-MM-dd').format(timeInfo.utcTime);
 
     return Container(
         margin: EdgeInsets.only(bottom: 20.0),
@@ -51,7 +52,7 @@ class TimeCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${timeInfo['name']}',
+                      '${timeInfo.name}',
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 18.0,

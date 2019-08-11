@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'components/TimeCard.dart';
 import 'components/TimeForm.dart';
+import './models/eventStorage.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,43 +49,73 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static final timeInfos = [
-    {
-      'name': '告白纪念日',
-      'time': DateTime.parse('2019-09-30'),
-    },
-    {
-      'name': '苹果 2019 发布会',
-      'time': DateTime.parse('2019-09-21'),
-    },
-    {
-      'name': '外婆的生日',
-      'time': DateTime.parse('2019-08-06'),
-    },
-    {
-      'name': '杨千嬅惠州演唱会',
-      'time': DateTime.parse('2019-08-05'),
-    },
-    {
-      'name': '国庆旅游',
-      'time': DateTime.parse('2019-10-01'),
-    },
-    {
-      'name': '国庆旅游',
-      'time': DateTime.parse('2019-10-01'),
-    },
-    {
-      'name': '国庆旅游',
-      'time': DateTime.parse('2019-10-01'),
-    }
-  ];
+  EventList timeInfos = new EventList([]);
+  //   static final timeInfos = [
+  //   {
+  //     'name': '告白纪念日',
+  //     'time': DateTime.parse('2019-09-30'),
+  //   },
+  //   {
+  //     'name': '苹果 2019 发布会',
+  //     'time': DateTime.parse('2019-09-21'),
+  //   },
+  //   {
+  //     'name': '外婆的生日',
+  //     'time': DateTime.parse('2019-08-06'),
+  //   },
+  //   {
+  //     'name': '杨千嬅惠州演唱会',
+  //     'time': DateTime.parse('2019-08-05'),
+  //   },
+  //   {
+  //     'name': '国庆旅游',
+  //     'time': DateTime.parse('2019-10-01'),
+  //   },
+  //   {
+  //     'name': '国庆旅游',
+  //     'time': DateTime.parse('2019-10-01'),
+  //   },
+  //   {
+  //     'name': '国庆旅游',
+  //     'time': DateTime.parse('2019-10-01'),
+  //   }
+  // ];
+  final eventsInstance = EventStorage();
 
-  List renderAllTimeCards(timeInfos) {
-    return timeInfos.map<Widget>((item) => 
+  List renderAllTimeCards(List timeInfos) {
+    print(timeInfos);
+    return timeInfos.map((item) => 
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [TimeCard(timeInfo: item)]
       )).toList();
+  }
+
+  Future<List> getLocalData() async {
+    final storage = EventStorage();
+    List data = await storage.readStorage();
+    return data;
+  }
+
+  @override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+    getLocalData().then((data) {
+      print('then!');
+      // print(widget.timeInfos);
+      setState(() {
+        timeInfos = EventList.fromJson(data);
+        print('set');
+        print(timeInfos.events);
+      });
+    });
+    // final fakeEventInstance = Event(fakeEvent['name'], fakeEvent['time']);
+    // EventList events = EventList.fromJson(timeInfos);
+    // print(eventList.events[0].name);
+    // final jsonStr = storage.toJSONString(timeInfos1);
+    // print(jsonStr);
+    // storage.writeStorage(jsonStr);
   }
 
   @override
@@ -125,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // mainAxisAlignment: MainAxisAlignment.start,
             // scrollDirection: Axis.vertical,
             // itemExtent: 130.0,
-            children: renderAllTimeCards(timeInfos),
+            children: renderAllTimeCards(timeInfos.events),
           ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -150,12 +181,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     child: TimeForm(
-                      callback: (Map timeInfo) {
+                      callback: (Event timeInfo) {
                         setState(() {
-                          timeInfos.add({
-                            'name': timeInfo['name'],
-                            'time': timeInfo['time']
-                          });
+                          timeInfos.addEvent(timeInfo);
                           Navigator.pop(context);
                         });
                       }

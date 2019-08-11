@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:hello_world/models/eventStorage.dart';
 import 'package:intl/intl.dart';
 
 class TimeForm extends StatefulWidget {
@@ -98,11 +99,11 @@ class MyTimeFormState extends State<TimeForm>{
                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 onPressed: () {
                   if(_formKey.currentState.validate()) {
-                      final timeinfo = {
-                        'name': _timeNameController.text,
+                      final timeinfo = 
+                        Event(_timeNameController.text,
                         // !!!TODO: save real datetime
-                        'time': DateFormat('yyyy-MM-dd').format(selectedDate)
-                      };
+                        selectedDate)
+                      ;
                       onSave(timeinfo);
                   }
                 },
