@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'components/TimeCard.dart';
 import 'components/TimeForm.dart';
 import './models/eventStorage.dart';
+import './page/eventModify.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,6 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      routes: {
+        EventModifyRoute.routeName: (context) => EventModifyRoute(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //

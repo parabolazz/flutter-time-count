@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/eventStorage.dart';
 import 'package:intl/intl.dart';
+import '../page/eventModify.dart';
 import 'dart:math';
 
 class TimeCard extends StatelessWidget {
@@ -25,7 +26,18 @@ class TimeCard extends StatelessWidget {
     final String countdown = _computeCountdown(timeInfo.utcTime);
     final textTime =  DateFormat('yyyy-MM-dd').format(timeInfo.utcTime);
 
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          EventModifyRoute.routeName,
+          arguments: ScreenArguments(
+            'name to test',
+            new DateTime.now()
+          )
+        );
+      },
+      child: Container(
         margin: EdgeInsets.only(bottom: 20.0),
         padding: EdgeInsets.all(10.0),
         width: 330.0,
@@ -88,6 +100,7 @@ class TimeCard extends StatelessWidget {
                       )),
                     ]))
             ])
+      )
     );
   }
 }
