@@ -8,8 +8,9 @@ class EventList {
 
   EventList(this.events);
 
-  List toJson() {
-    return events.map((event) => event.toJson()).toList();
+  String toJson() {
+    final data = events.map((event) => event.toJson()).toList();
+    return json.encode(data);
   }
   EventList.fromJson(List jsonList) 
     : events = jsonList.map((item) => 
@@ -17,6 +18,13 @@ class EventList {
 
   List addEvent(event) {
     this.events.add(event);
+    final String jsonString = this.toJson();
+    EventStorage().writeStorage(jsonString)
+      .then((data) {
+        print('添加成功！');
+      }).catchError((e) {
+        print('添加失败');
+      });
     return events;
   }
 }
@@ -31,7 +39,7 @@ class Event {
     : name = map['name'], utcTime = DateTime.parse(map['time']);
 
   Map<String, dynamic> toJson() => {
-    'x': name,
+    'name': name,
     'time': utcTime.toIso8601String()
   };
 }

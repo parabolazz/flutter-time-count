@@ -49,42 +49,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  EventList timeInfos = new EventList([]);
-  //   static final timeInfos = [
-  //   {
-  //     'name': '告白纪念日',
-  //     'time': DateTime.parse('2019-09-30'),
-  //   },
-  //   {
-  //     'name': '苹果 2019 发布会',
-  //     'time': DateTime.parse('2019-09-21'),
-  //   },
-  //   {
-  //     'name': '外婆的生日',
-  //     'time': DateTime.parse('2019-08-06'),
-  //   },
-  //   {
-  //     'name': '杨千嬅惠州演唱会',
-  //     'time': DateTime.parse('2019-08-05'),
-  //   },
-  //   {
-  //     'name': '国庆旅游',
-  //     'time': DateTime.parse('2019-10-01'),
-  //   },
-  //   {
-  //     'name': '国庆旅游',
-  //     'time': DateTime.parse('2019-10-01'),
-  //   },
-  //   {
-  //     'name': '国庆旅游',
-  //     'time': DateTime.parse('2019-10-01'),
-  //   }
-  // ];
+  EventList events = new EventList([]);
   final eventsInstance = EventStorage();
 
-  List renderAllTimeCards(List timeInfos) {
-    print(timeInfos);
-    return timeInfos.map((item) => 
+  List renderAllTimeCards(List events) {
+    return events.map((item) => 
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [TimeCard(timeInfo: item)]
@@ -99,23 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState(){
-    // TODO: implement initState
     super.initState();
     getLocalData().then((data) {
-      print('then!');
-      // print(widget.timeInfos);
       setState(() {
-        timeInfos = EventList.fromJson(data);
-        print('set');
-        print(timeInfos.events);
+        events = EventList.fromJson(data);
       });
     });
-    // final fakeEventInstance = Event(fakeEvent['name'], fakeEvent['time']);
-    // EventList events = EventList.fromJson(timeInfos);
-    // print(eventList.events[0].name);
-    // final jsonStr = storage.toJSONString(timeInfos1);
-    // print(jsonStr);
-    // storage.writeStorage(jsonStr);
   }
 
   @override
@@ -156,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // mainAxisAlignment: MainAxisAlignment.start,
             // scrollDirection: Axis.vertical,
             // itemExtent: 130.0,
-            children: renderAllTimeCards(timeInfos.events),
+            children: renderAllTimeCards(events.events),
           ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -181,9 +139,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     child: TimeForm(
-                      callback: (Event timeInfo) {
+                      callback: (Event eventInfo) {
                         setState(() {
-                          timeInfos.addEvent(timeInfo);
+                          events.addEvent(eventInfo);
                           Navigator.pop(context);
                         });
                       }
