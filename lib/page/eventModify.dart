@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import '../models/eventStorage.dart';
 
 class ScreenArguments {
-  final String name;
-  final DateTime time;
+  final Event event;
 
-  ScreenArguments(this.name, this.time);
+  ScreenArguments(this.event);
 }
 
 class EventModifyRoute extends StatelessWidget {
@@ -17,19 +17,29 @@ class EventModifyRoute extends StatelessWidget {
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            print('click!');
-            Navigator.pop(context);
-          },
-          child: Row(
-            children: [
-              Text('click me!'),
-              Text('${args.name}')
-            ]       
+      backgroundColor: Color(0xffffffff),
+      appBar: AppBar(
+        title: Text('修改')
+      ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: RaisedButton(
+              color: Color(0xffEF5350),
+              onPressed: () {
+                print(args.event.id);
+              },
+              child: Text(
+                '删除',
+                style: TextStyle(
+                  color: Colors.white,
+                  letterSpacing: 4.0
+                ),
+              ),
+            )
           )
-        )
+        ]
       )
     );
   }

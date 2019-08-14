@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/eventStorage.dart';
 import 'package:intl/intl.dart';
-import '../page/eventModify.dart';
 import 'dart:math';
 
 class TimeCard extends StatelessWidget {
-  final Event timeInfo;
-  TimeCard({this.timeInfo});
+  final Event eventInfo;
+  TimeCard({this.eventInfo, this.onClick});
+  final onClick;
 
   @override
   Widget build(
@@ -23,19 +23,12 @@ class TimeCard extends StatelessWidget {
     return days;
   }
 
-    final String countdown = _computeCountdown(timeInfo.utcTime);
-    final textTime =  DateFormat('yyyy-MM-dd').format(timeInfo.utcTime);
+    final String countdown = _computeCountdown(eventInfo.utcTime);
+    final textTime =  DateFormat('yyyy-MM-dd').format(eventInfo.utcTime);
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
-          context,
-          EventModifyRoute.routeName,
-          arguments: ScreenArguments(
-            'name to test',
-            new DateTime.now()
-          )
-        );
+        onClick(eventInfo);
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 20.0),
@@ -64,7 +57,7 @@ class TimeCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${timeInfo.name}',
+                      '${eventInfo.name}',
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 18.0,

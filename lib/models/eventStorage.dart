@@ -14,7 +14,15 @@ class EventList {
   }
   EventList.fromJson(List jsonList) 
     : events = jsonList.map((item) => 
-      Event(item['name'], DateTime.parse(item['time']))).toList();
+      Event(
+        item['name'],
+        DateTime.parse(item['time']),
+        item['id']
+      )).toList();
+  
+  void deleteEvent(id) {
+    this.events = this.events.where((event) => event.id != id);
+  }
 
   List addEvent(event) {
     this.events.add(event);
@@ -32,15 +40,20 @@ class EventList {
 class Event {
   String name;
   DateTime utcTime;
+  // 使用 timestamp 作为 id
+  int id;
 
-  Event(this.name, this.utcTime);
+  Event(this.name, this.utcTime, this.id);
   
   Event.fromJson(Map<String, dynamic> map)
-    : name = map['name'], utcTime = DateTime.parse(map['time']);
+    : name = map['name'],
+      utcTime = DateTime.parse(map['time']),
+      id = map['id'];
 
   Map<String, dynamic> toJson() => {
     'name': name,
-    'time': utcTime.toIso8601String()
+    'time': utcTime.toIso8601String(),
+    'id': id
   };
 }
 

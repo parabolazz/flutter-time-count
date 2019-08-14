@@ -60,7 +60,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return events.map((item) => 
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [TimeCard(timeInfo: item)]
+        children: [
+          TimeCard(
+            onClick: (Event eventInfo) {
+              Navigator.pushNamed(
+                context,
+                EventModifyRoute.routeName,
+                arguments: ScreenArguments(eventInfo)
+              );
+            },
+            eventInfo: item
+          )
+        ]
       )).toList();
   }
 

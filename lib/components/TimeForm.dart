@@ -100,9 +100,11 @@ class MyTimeFormState extends State<TimeForm>{
                 onPressed: () {
                   if(_formKey.currentState.validate()) {
                       final timeinfo = 
-                        Event(_timeNameController.text,
+                        Event(
+                        _timeNameController.text,
                         // !!!TODO: save real datetime
-                        selectedDate)
+                        selectedDate,
+                        new DateTime.now().millisecondsSinceEpoch)
                       ;
                       onSave(timeinfo);
                   }
