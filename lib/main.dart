@@ -53,7 +53,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  EventList events = new EventList([]);
   final eventsInstance = EventStorage();
 
   List renderAllTimeCards(List events) {
@@ -86,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     getLocalData().then((data) {
       setState(() {
-        events = EventList.fromJson(data);
+        myEvents = EventList.fromJson(data);
       });
     });
   }
@@ -129,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // mainAxisAlignment: MainAxisAlignment.start,
             // scrollDirection: Axis.vertical,
             // itemExtent: 130.0,
-            children: renderAllTimeCards(events.events),
+            children: renderAllTimeCards(myEvents.events),
           ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -156,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: TimeForm(
                       callback: (Event eventInfo) {
                         setState(() {
-                          events.addEvent(eventInfo);
+                          myEvents.addEvent(eventInfo);
                           Navigator.pop(context);
                         });
                       }

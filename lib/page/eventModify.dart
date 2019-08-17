@@ -13,7 +13,6 @@ class EventModifyRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
@@ -21,25 +20,38 @@ class EventModifyRoute extends StatelessWidget {
       appBar: AppBar(
         title: Text('修改')
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: RaisedButton(
-              color: Color(0xffEF5350),
-              onPressed: () {
-                print(args.event.id);
-              },
-              child: Text(
-                '删除',
-                style: TextStyle(
-                  color: Colors.white,
-                  letterSpacing: 4.0
-                ),
-              ),
-            )
-          )
-        ]
+      body: new Builder(
+        builder:  (BuildContext context) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('${args.event.id}'),
+              Center(
+                child: RaisedButton(
+                  color: Color(0xffEF5350),
+                  onPressed: () {
+                    myEvents.deleteEvent(args.event.id)
+                      .then((data) {
+                        Scaffold.of(context).showSnackBar(new SnackBar(
+                          content: new Text("删除事件成功！"),
+                        ));
+                        Future.delayed(const Duration(milliseconds: 800), () {
+                          Navigator.pop(context);
+                        });
+                      });
+                  },
+                  child: Text(
+                    '删除',
+                    style: TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 4.0
+                    ),
+                  ),
+                )
+              )
+            ]
+          );
+        }
       )
     );
   }

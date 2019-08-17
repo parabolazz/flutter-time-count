@@ -20,8 +20,10 @@ class EventList {
         item['id']
       )).toList();
   
-  void deleteEvent(id) {
-    this.events = this.events.where((event) => event.id != id);
+  Future deleteEvent(id) {
+    this.events = this.events.where((event) => event.id != id).toList();
+    final String jsonString = this.toJson();
+    return EventStorage().writeStorage(jsonString);
   }
 
   List addEvent(event) {
@@ -36,6 +38,8 @@ class EventList {
     return events;
   }
 }
+
+var myEvents = new EventList([]);
 
 class Event {
   String name;
