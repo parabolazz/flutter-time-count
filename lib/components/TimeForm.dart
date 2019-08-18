@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/eventStorage.dart';
 import 'package:intl/intl.dart';
+import './DatePicker.dart';
 
 class TimeForm extends StatefulWidget {
 
@@ -21,19 +22,6 @@ class MyTimeFormState extends State<TimeForm>{
   void onSave(info) {
     widget.callback(info);
   }
-
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-      });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,11 +69,14 @@ class MyTimeFormState extends State<TimeForm>{
                       fontSize: 16.0
                     ),
                   ),
-                  FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () => _selectDate(context),
-                    child: Text(DateFormat('yyyy-MM-dd').format(selectedDate)),
-                  ),
+                  DatePicker(
+                    selectedDate,
+                    (newDate) {
+                      setState(() {
+                        selectedDate = newDate;
+                      });
+                    }
+                  )
                 ],
               )
               ),
