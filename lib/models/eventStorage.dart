@@ -37,6 +37,19 @@ class EventList {
       });
     return events;
   }
+
+  void updateEvent(event) {
+    final index = this.events.indexWhere((e) => e.id == event.id);
+    final newContent = EventList([event]).events;
+    this.events.replaceRange(index, index+1, newContent);
+    final String jsonString = this.toJson();
+    EventStorage().writeStorage(jsonString)
+      .then((data) {
+        print('更新成功！');
+      }).catchError((e) {
+        print('更新失败');
+      });
+  }
 }
 
 var myEvents = new EventList([]);

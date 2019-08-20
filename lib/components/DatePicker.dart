@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class DatePicker extends StatelessWidget{
@@ -24,7 +25,11 @@ class DatePicker extends StatelessWidget{
     return FlatButton(
       padding: EdgeInsets.all(0),
       onPressed: () => _selectDate(context, selectedDate),
-      child: Text(DateFormat('yyyy-MM-dd').format(selectedDate)),
+      child: Text(
+        DateFormat('yyyy-MM-dd').format(selectedDate),
+        style: TextStyle(
+          fontSize: 18.0
+        )),
     );
   }
 }
