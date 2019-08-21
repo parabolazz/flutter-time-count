@@ -1,0 +1,1 @@
+const availableColors = [0xffFF8A80, 0xff9E9E9E, 0xFF8C9EFF];

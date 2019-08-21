@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hello_world/models/eventStorage.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
+import '../const/colors.dart';
 
 class TimeCard extends StatelessWidget {
   final Event eventInfo;
@@ -13,8 +14,7 @@ class TimeCard extends StatelessWidget {
     BuildContext context,
   ) {
 
-  const List cardColors = [0xffFF8A80, 0xff9E9E9E, 0XFF8C9EFF];
-  final currentCardColor = cardColors[new Random().nextInt(3)];
+  final currentCardColor = availableColors[new Random().nextInt(3)];
 
   String _computeCountdown(DateTime setTime) {
     final currentTime = new DateTime.now();

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:convert';
 
 class EventList {
-  List events;
+  List<Event> events;
 
   EventList(this.events);
 
@@ -26,29 +26,27 @@ class EventList {
     return EventStorage().writeStorage(jsonString);
   }
 
-  List addEvent(event) {
-    this.events.add(event);
+  void saveDataToLocal() {
     final String jsonString = this.toJson();
     EventStorage().writeStorage(jsonString)
       .then((data) {
-        print('添加成功！');
+        print('操作成功！');
       }).catchError((e) {
-        print('添加失败');
+        print('操作失败');
       });
+  }
+
+  List addEvent(event) {
+    this.events.add(event);
+     this.saveDataToLocal();
     return events;
   }
 
   void updateEvent(event) {
     final index = this.events.indexWhere((e) => e.id == event.id);
-    final newContent = EventList([event]).events;
-    this.events.replaceRange(index, index+1, newContent);
-    final String jsonString = this.toJson();
-    EventStorage().writeStorage(jsonString)
-      .then((data) {
-        print('更新成功！');
-      }).catchError((e) {
-        print('更新失败');
-      });
+    final Event newOne = new Event(event.name, event.utcTime, event.id);
+    this.events.replaceRange(index, index+1, [newOne]);
+    this.saveDataToLocal();
   }
 }
 

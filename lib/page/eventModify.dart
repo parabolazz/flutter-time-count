@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import '../models/eventStorage.dart';
 import '../components/DatePicker.dart';
+import '../const/colors.dart';
+import '../components/ColorPicker.dart';
 
 class ScreenArguments {
   final Event event;
@@ -18,40 +20,18 @@ class EventModifyRoute extends StatefulWidget {
 }
 
 class EventModifyState extends State {
-  static const availableColors = [0xffFF8A80, 0xff9E9E9E, 0xFF8C9EFF];
   int currColor = 0xFF8C9EFF;
+  
+  void setColor(color) {
+    setState(() {
+      currColor = color;
+    });
+  }
 
   List renderColorPickers () {
-    return availableColors.map((c) => 
-      Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 5.0, 20.0, 5.0),
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              currColor = c;
-            });
-            print(currColor);
-          },
-          child: ClipOval(
-            child: Container(
-              padding: EdgeInsets.all(2.0),
-              decoration: BoxDecoration(
-                border: Border.all(width: 1.0, color: const Color(0xFF878787)),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: ClipOval(
-                child: Container(
-                  width: 28.0,
-                  height: 28.0,
-                  decoration: BoxDecoration(
-                    color: Color(c)
-                  ),
-                ),
-              )
-            )
-          )
-        )
-      )).toList();
+    return availableColors.map((c) =>
+        ColorPicker(c, currColor == c, setColor)
+      ).toList();
   }
 
   @override
