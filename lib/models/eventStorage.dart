@@ -17,7 +17,8 @@ class EventList {
       Event(
         item['name'],
         DateTime.parse(item['time']),
-        item['id']
+        item['id'],
+        item['color']
       )).toList();
   
   Future deleteEvent(id) {
@@ -26,9 +27,9 @@ class EventList {
     return EventStorage().writeStorage(jsonString);
   }
 
-  void saveDataToLocal() {
+  Future saveDataToLocal() {
     final String jsonString = this.toJson();
-    EventStorage().writeStorage(jsonString)
+    return EventStorage().writeStorage(jsonString)
       .then((data) {
         print('操作成功！');
       }).catchError((e) {
@@ -42,11 +43,11 @@ class EventList {
     return events;
   }
 
-  void updateEvent(event) {
+  Future updateEvent(event) {
     final index = this.events.indexWhere((e) => e.id == event.id);
-    final Event newOne = new Event(event.name, event.utcTime, event.id);
+    final Event newOne = new Event(event.name, event.utcTime, event.id, event.color);
     this.events.replaceRange(index, index+1, [newOne]);
-    this.saveDataToLocal();
+    return this.saveDataToLocal();
   }
 }
 
@@ -57,18 +58,21 @@ class Event {
   DateTime utcTime;
   // 使用 timestamp 作为 id
   int id;
+  int color;
 
-  Event(this.name, this.utcTime, this.id);
+  Event(this.name, this.utcTime, this.id, this.color);
   
   Event.fromJson(Map<String, dynamic> map)
     : name = map['name'],
       utcTime = DateTime.parse(map['time']),
-      id = map['id'];
+      id = map['id'],
+      color = map['color'];
 
   Map<String, dynamic> toJson() => {
     'name': name,
     'time': utcTime.toIso8601String(),
-    'id': id
+    'id': id,
+    'color': color
   };
 }
 

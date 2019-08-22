@@ -6,7 +6,7 @@ class ColorPicker extends StatelessWidget {
   final bool active;
   final onClick;
 
-  ColorPicker(this.color, this.active, this.onClick);
+  ColorPicker({this.color, this.active, this.onClick});
 
   @override
   Widget build(context) {
